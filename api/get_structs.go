@@ -3,9 +3,9 @@ package api
 import (
 	"errors"
 
-	"github.com/use-go/onvif/device"
-	"github.com/use-go/onvif/media"
-	"github.com/use-go/onvif/ptz"
+	"github.com/HYBIOT/onvif/device"
+	"github.com/HYBIOT/onvif/media"
+	"github.com/HYBIOT/onvif/ptz"
 )
 
 func getPTZStructByName(name string) (interface{}, error) {

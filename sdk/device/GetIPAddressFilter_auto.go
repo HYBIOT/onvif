@@ -7,9 +7,9 @@ package device
 import (
 	"context"
 	"github.com/juju/errors"
-	"github.com/use-go/onvif"
-	"github.com/use-go/onvif/sdk"
-	"github.com/use-go/onvif/device"
+	"github.com/HYBIOT/onvif"
+	"github.com/HYBIOT/onvif/sdk"
+	"github.com/HYBIOT/onvif/device"
 )
 
 // Call_GetIPAddressFilter forwards the call to dev.CallMethod() then parses the payload of the reply as a GetIPAddressFilterResponse.
