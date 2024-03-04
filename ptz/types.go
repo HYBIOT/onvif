@@ -41,8 +41,8 @@ type GetNodeResponse struct {
 }
 
 type GetConfiguration struct {
-	XMLName      string               `xml:"tptz:GetConfiguration"`
-	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
+	XMLName               string               `xml:"tptz:GetConfiguration"`
+	PTZConfigurationToken onvif.ReferenceToken `xml:"tptz:PTZConfigurationToken"`
 }
 
 type GetConfigurationResponse struct {
@@ -67,8 +67,8 @@ type SetConfigurationResponse struct {
 }
 
 type GetConfigurationOptions struct {
-	XMLName      string               `xml:"tptz:GetConfigurationOptions"`
-	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
+	XMLName            string               `xml:"tptz:GetConfigurationOptions"`
+	ConfigurationToken onvif.ReferenceToken `xml:"tptz:ConfigurationToken"`
 }
 
 type GetConfigurationOptionsResponse struct {
@@ -145,7 +145,7 @@ type ContinuousMove struct {
 	XMLName      string               `xml:"tptz:ContinuousMove"`
 	ProfileToken onvif.ReferenceToken `xml:"tptz:ProfileToken"`
 	Velocity     onvif.PTZSpeed       `xml:"tptz:Velocity"`
-	Timeout      xsd.Duration         `xml:"tptz:Timeout"`
+	Timeout      *xsd.Duration        `xml:"tptz:Timeout,omitempty"`
 }
 
 type ContinuousMoveResponse struct {
