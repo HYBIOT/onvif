@@ -1,4 +1,4 @@
-package digest
+package onvif
 
 import (
 	"crypto/md5"

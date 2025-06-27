@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"github.com/HYBIOT/onvif/device"
-	"github.com/HYBIOT/onvif/digest"
 	"github.com/HYBIOT/onvif/gosoap"
 	"github.com/HYBIOT/onvif/networking"
 	wsdiscovery "github.com/HYBIOT/onvif/ws-discovery"
@@ -302,7 +301,7 @@ func (dev Device) callMethodDo(endpoint string, method interface{}) (*http.Respo
 		return resp, nil
 	}
 
-	digestHeader, err := digest.GetDigestAuthHeader(
+	digestHeader, err := GetDigestAuthHeader(
 		wwwAuthHeader,
 		dev.params.Username,
 		dev.params.Password,
