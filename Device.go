@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/HYBIOT/onvif/device"
+	"github.com/HYBIOT/onvif/digest"
 	"github.com/HYBIOT/onvif/gosoap"
 	"github.com/HYBIOT/onvif/networking"
 	wsdiscovery "github.com/HYBIOT/onvif/ws-discovery"
@@ -86,6 +87,8 @@ type DeviceParams struct {
 	Username   string
 	Password   string
 	HttpClient *http.Client
+
+	FallbackDigestAuth bool // Fallback to digest authentication
 }
 
 // GetServices return available endpoints
@@ -283,5 +286,34 @@ func (dev Device) callMethodDo(endpoint string, method interface{}) (*http.Respo
 		soap.AddWSSecurity(dev.params.Username, dev.params.Password)
 	}
 
-	return networking.SendSoap(dev.params.HttpClient, endpoint, soap.String())
+	resp, err := networking.SendSoap(dev.params.HttpClient, endpoint, soap.String())
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusUnauthorized || !dev.params.FallbackDigestAuth {
+		return resp, nil
+	}
+
+	// Fallback to digest authentication
+
+	wwwAuthHeader := resp.Header.Get("WWW-Authenticate")
+	if !strings.HasPrefix(wwwAuthHeader, "Digest") {
+		return resp, nil
+	}
+
+	digestHeader, err := digest.GetDigestAuthHeader(
+		wwwAuthHeader,
+		dev.params.Username,
+		dev.params.Password,
+		"POST",
+		endpoint,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return networking.SendSoapWithHeaders(dev.params.HttpClient, endpoint, soap.String(), map[string]string{
+		"Authorization": digestHeader,
+	})
 }
