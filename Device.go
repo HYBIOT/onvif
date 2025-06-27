@@ -3,6 +3,7 @@ package onvif
 import (
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -239,6 +240,12 @@ func (dev Device) getEndpoint(endpoint string) (string, error) {
 		return endpointURL, nil
 	}
 
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("🟡dev.endpoints: %+v\n", dev.endpoints)
+	fmt.Println()
+	fmt.Println()
+
 	//but ,if we have endpoint like event、analytic
 	//and sametime the Targetkey like : events、analytics
 	//we use fuzzy way to find the best match url
@@ -255,13 +262,33 @@ func (dev Device) getEndpoint(endpoint string) (string, error) {
 // CallMethod functions call an method, defined <method> struct.
 // You should use Authenticate method to call authorized requests.
 func (dev Device) CallMethod(method interface{}) (*http.Response, error) {
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("🟡type of method: %+v\n", reflect.TypeOf(method).PkgPath())
+	fmt.Println()
+	fmt.Println()
 	pkgPath := strings.Split(reflect.TypeOf(method).PkgPath(), "/")
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("🟡pkgPath: %+v\n", pkgPath)
+	fmt.Println()
+	fmt.Println()
 	pkg := strings.ToLower(pkgPath[len(pkgPath)-1])
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("🟡pkg: %+v\n", pkg)
+	fmt.Println()
+	fmt.Println()
 
 	endpoint, err := dev.getEndpoint(pkg)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println()
+	fmt.Println()
+	fmt.Printf("🟡endpoint: %+v\n", endpoint)
+	fmt.Println()
+	fmt.Println()
 	return dev.callMethodDo(endpoint, method)
 }
 
